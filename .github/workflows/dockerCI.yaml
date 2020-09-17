@@ -4,27 +4,6 @@ on:
   push:
     branches:
       - main
-
-    paths:
-      - 'src/**'
-
-    paths-ignore:
-      - 'docs/**'
-      - '**.md'
-
-    tags:
-      - v*
-
-on:
-  pull_request:
-    types: [ opened, reopened, synchronize, closed ]
-    branches:
-      - main
-
-    paths-ignore:
-    - 'docs/**'
-    - '**.md'
-
 jobs:
 
   build:
