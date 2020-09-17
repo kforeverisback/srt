@@ -19,21 +19,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-
-    - name: Login to Azure registry
-      # do not copy the actual secrets
-      # You must add the following secrets to github repo
-      #    ACR_USER  - Azure ServicePrincipal ID
-      #    ACR_PAT   - the access token for the ServicePrincipal
-      #    ACR_REPO  - the azure ecr repository name in the form: organization/repository
-      #    ACR_REG   - the azure ecr registry name. It will be apended to form azure CR url: $DOCKER_REG.azurecr.io
-      # Overall azure reg/repo address will be in the form : $ACR_REG.azurecr.io/$DOCKER_REPO
-      run: |
-        # Login to Azure registry
-        echo Logging into # TODO: Remove this
-        echo "${{ secrets.SERVICE_PRINCIPAL_SECRET }}" | docker login "${ACR_IMAGE_URL}" -u ${{ secrets.SERVICE_PRINCIPAL_ID }} --password-stdin
-
-        # If docker login fails, set env variable
+    - uses: azure/docker-login@v1
+      with:
+        login-server: ${ACR_IMAGE_URL} # default: index.docker.io
+        username: ${{ secrets.SERVICE_PRINCIPAL_ID }}
+        password: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
+        run: |
         [[ $? == 0 ]] && echo "::set-env name=ACR_LOGGED_IN::true"
 
     - name: Build Container
