@@ -30,7 +30,7 @@ jobs:
       # Overall azure reg/repo address will be in the form : $ACR_REG.azurecr.io/$DOCKER_REPO
       run: |
         # Login to Azure registry
-        echo "${{ secrets.SERVICE_PRINCIPAL_SECRET }}" | docker login "${ ACR_IMAGE_URL }" -u ${{ secrets.SERVICE_PRINCIPAL_ID }} --password-stdin
+        echo "${{ secrets.SERVICE_PRINCIPAL_SECRET }}" | docker login "${ACR_IMAGE_URL}" -u ${{ secrets.SERVICE_PRINCIPAL_ID }} --password-stdin
         # If docker login is successful, set env variable
         [[ $? == 0 ]] && echo "::set-env name=ACR_LOGGED_IN::true"
 
