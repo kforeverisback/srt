@@ -24,8 +24,7 @@ jobs:
         login-server: ${ACR_IMAGE_URL} # default: index.docker.io
         username: ${{ secrets.SERVICE_PRINCIPAL_ID }}
         password: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
-        run: |
-        [[ $? == 0 ]] && echo "::set-env name=ACR_LOGGED_IN::true"
+        run: echo "::set-env name=ACR_LOGGED_IN::true"
 
     - name: Build Container
       if: ${{ env.ACR_LOGGED_IN == 'true' }}
