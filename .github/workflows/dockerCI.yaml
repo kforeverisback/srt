@@ -16,9 +16,10 @@ jobs:
       # These are used in if: conditions
       ACR_LOGGED_IN    : false
       DKR_IMG_IS_BUILT : false
+      TEMP_IMG_NAME    : sp_image
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Login to Azure registry
       # do not copy the actual secrets
       # You must add the following secrets to github repo
@@ -37,7 +38,7 @@ jobs:
       if: ${{ env.ACR_LOGGED_IN == 'true' }}
       run: |
         # Build Image
-        docker build -t image .
+        docker build -t ${TEMP_IMG_NAME} .
         # Set variable is successful
         [[ $? == 0 ]] && echo "::set-env name=DKR_IMG_IS_BUILT::true"
 
@@ -46,5 +47,5 @@ jobs:
       run: |
         # Tag and push the docker image
         IMAGE_ID="${ACR_IMAGE_URL}"
-        docker tag image $IMAGE_ID:stable
+        docker tag ${TEMP_IMG_NAME} $IMAGE_ID:stable
         docker push $IMAGE_ID
